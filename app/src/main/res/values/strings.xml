@@ -1,0 +1,34 @@
+<resources>
+    <!--Allgemein -->
+    <string name="app_name">SaufIO</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+
+    <!--MainActivty-->
+    <string name="tp_name">Spielername eingeben</string>
+    <string name="hinzufuegen">Hinzufügen</string>
+    <string name="start">Spiel starten</string>
+    <string name="spielernamenstart">Aktuell sind noch keine Spieler hinzugefügt: </string>
+    <string name="spielernamen">Es gibt folgende Spieler</string>
+        <!-- Alerts -->
+        <!-- Kein nickanme eingetragen -->
+        <string name="alter_spielername_title">Spielername leer</string>
+        <string name="alter_spielername_message">Der Spielername ist leer</string>
+        <!-- zu wenig Spieler -->
+        <string name="alter_spieler_title">Zu wenig Spieler!</string>
+        <string name="alter_spieler_message">Es müssen mindestens 2 Spieler sein</string>
+
+    <!--Hauptspiel -->
+    <string name="naechsterspieler">Nächste Runde</string>
+    <string name="Kopf">Kopf</string>
+    <string name="Zahl">Zahl</string>
+    <string name="entscheidung"> entscheide dich: Kopf oder Zahl</string>
+    <string name="glueck_kopf">Glück gehabt! Es ist Kopf.</string>
+    <string name="pech_kopf">Pech gehabt! Trinken!</string>
+    <string name="glueck_zahl">Glück gehabt! Es ist Zahl.</string>
+    <string name="pech_zahl">Pech gehabt! Trinken!</string>
+    <!-- Alerts -->
+    <!-- Spiel beenden -->
+    <string name="alter_spielende_title">Spiel beenden?</string>
+    <string name="alter_spielende_message">Soll das Spiel wirklich beendet werden?</string>
+</resources>
