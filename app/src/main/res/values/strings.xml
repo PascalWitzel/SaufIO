@@ -8,8 +8,9 @@
     <string name="tp_name">Spielername eingeben</string>
     <string name="hinzufuegen">Hinzufügen</string>
     <string name="start">Spiel starten</string>
-    <string name="spielernamenstart">Aktuell sind noch keine Spieler hinzugefügt: </string>
-    <string name="spielernamen">Es gibt folgende Spieler</string>
+    <string name="spielernamenstart">Aktuell sind noch keine Spieler hinzugefügt</string>
+    <string name="spielernamen">Es gibt folgende Spieler:  </string>
+    <string name="anzahlshots">Wie viele Schlücke auf einmal:</string>
         <!-- Alerts -->
         <!-- Kein nickanme eingetragen -->
         <string name="alter_spielername_title">Spielername leer</string>
@@ -17,6 +18,8 @@
         <!-- zu wenig Spieler -->
         <string name="alter_spieler_title">Zu wenig Spieler!</string>
         <string name="alter_spieler_message">Es müssen mindestens 2 Spieler sein</string>
+        <!--Toast-->
+        <string name="t_add"> wurde hinzugefügt </string>
 
     <!--Hauptspiel -->
     <string name="naechsterspieler">Nächste Runde</string>
@@ -31,4 +34,11 @@
     <!-- Spiel beenden -->
     <string name="alter_spielende_title">Spiel beenden?</string>
     <string name="alter_spielende_message">Soll das Spiel wirklich beendet werden?</string>
+    <!-- Spieler löschen zu wenig -->
+    <string name="alter_spielerloeschen_title">Wenig Spieler</string>
+    <string name="alter_spieleerloeschen_message">Ihr müsst mindestens 2 Spieler sein</string>
+    <!-- Spieler löschen fragen -->
+    <string name="alter_spielerfrage">Welcher Spieler soll gelöscht werden?</string>
+    <!--Toast-->
+    <string name="t_loschen"> wurde gelöscht </string>
 </resources>

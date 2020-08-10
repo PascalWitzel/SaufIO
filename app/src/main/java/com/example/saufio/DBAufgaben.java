@@ -17,9 +17,9 @@ public class DBAufgaben{
 
     //private static String databasename;
     final String databasename = "database";
-    final String tabelename = "aufgabetabele";
-    final String ID = "ID";
-    final String Aufgabe = "Aufgabe";
+    final String tabelename = "test";
+    final String ID = "id";
+    final String Aufgabe = "aufgabe";
 
 
     //Create Database
@@ -72,7 +72,7 @@ public class DBAufgaben{
 
     public void TabelleLeeren(Context c){
         SQLiteDatabase aufgabe = c.openOrCreateDatabase(databasename,MODE_PRIVATE,null);
-        aufgabe.execSQL("Delete from "+tabelename);
+//        aufgabe.execSQL("Delete from "+tabelename);
         Log.i("Database","Tabelle wurde komplett gelöscht");
         aufgabe.close();
     }

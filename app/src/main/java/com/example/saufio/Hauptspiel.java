@@ -3,6 +3,7 @@ package com.example.saufio;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +25,12 @@ public class Hauptspiel extends AppCompatActivity {
     //Button
     Button btn_zahl, btn_kopf, btn_zufall;
     //TextView
-    TextView tv_spieler1111;
+    TextView tv_spieler1111, tv_aufgabe;
     //INT
     int zufallszahl, zufallspieler;
+    //Array
+    ArrayList<String> Spieler;
+
     //Imports generierung
     //Zufallgenerator
     Random r= new java.util.Random();
@@ -36,9 +41,12 @@ public class Hauptspiel extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hauptspiel);
         tv_spieler1111 = (TextView)findViewById(R.id.tv_spieleranzeige);
+        tv_aufgabe=(TextView)findViewById(R.id.tv_aufgabe);
+        tv_aufgabe.setText(aufgabebekommen());
         TextView tv =(TextView)findViewById(R.id.textView);
+        Spieler = (ArrayList<String>) getIntent().getSerializableExtra("key");
         //dbAufgaben.CreateRecord(getBaseContext(),"WerrdeichgenommenFotze");
-        tv.setText(dbAufgaben.Querywert(getBaseContext(),1));
+//        tv.setText(dbAufgaben.Querywert(getBaseContext(),1));
     }
 
     @Override
@@ -77,17 +85,27 @@ public class Hauptspiel extends AppCompatActivity {
        einblenden_k_o_z();
     }
     public void btn_spielerloeschen(View view){
-        //Todo: einzelnen Spieler löschen
-        DBAufgaben dbAufgaben = new DBAufgaben();
-        tv_spieler1111.setText(dbAufgaben.Querywert(getBaseContext(),2));
-        //ArrayList<String> Spieler = (ArrayList<String>) getIntent().getSerializableExtra("key");
-        //Spieler.remove(1);
+        CharSequence spieler[] = Spieler.toArray(new CharSequence[Spieler.size()]);;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getResources().getString(R.string.alter_spielerfrage));
+        builder.setItems(spieler, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (Spieler.size()!=2){
+                    Toast.makeText(getApplicationContext(),Spieler.get(which)+" "+ getResources().getString(R.string.t_loschen),Toast.LENGTH_SHORT).show();
+                    Spieler.remove(which);
+                } else {
+                    wenigSpieler();
+                }
+                tv_aufgabe.setText(String.valueOf(which));
+            }
+        });
+        builder.show();
     }
 
     //Eigene Methoden
     //Suche einen Zufälligen  Spieler
     public void Spielerauswaehlen(){
-        ArrayList<String> Spieler = (ArrayList<String>) getIntent().getSerializableExtra("key");
         zufallspieler = r.nextInt(Spieler.size());
         tv_spieler1111.setText(Spieler.get(zufallszahl)+getResources().getString(R.string.entscheidung));
         img_muenze=(ImageView) findViewById(R.id.img_muenze);
@@ -140,18 +158,29 @@ public class Hauptspiel extends AppCompatActivity {
         btn_zufall.setVisibility(View.INVISIBLE);
     }
 
-    public void aufgabebekommen(){
-        DBAufgaben dbAufgaben=new DBAufgaben();
+    public String aufgabebekommen(){
+        /*DBAufgaben dbAufgaben=new DBAufgaben();
         int id = dbAufgaben.Highid(getBaseContext());
         String aufgabe = null;
         while (aufgabe == null) {
             id = r.nextInt(id);
             aufgabe=dbAufgaben.Querywert(getBaseContext(),id);
-        }
-        id = r.nextInt(3)+1;
-
-        //Todo: Rdm schluck setzen
-        //Todo: Textview setzen/erstellen
-        //TEXTVIEW setzen
+        }*/
+        int numberpicker = getIntent().getIntExtra("key2",1);
+        int id = r.nextInt(numberpicker)+1;
+        return String.valueOf(id);
+    }
+    public void wenigSpieler(){
+        AlertDialog.Builder alterDialog = new AlertDialog.Builder(this);
+        alterDialog.setTitle(getResources().getString(R.string.alter_spielerloeschen_title));
+        alterDialog.setMessage(getResources().getString(R.string.alter_spieleerloeschen_message));
+        alterDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                onBackPressed();
+            }
+        });
+        alterDialog.create();
+        alterDialog.show();
     }
 }
