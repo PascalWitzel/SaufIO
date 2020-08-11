@@ -83,6 +83,7 @@ public class Hauptspiel extends AppCompatActivity {
     public void btn_zufall(View view){
        Spielerauswaehlen();
        einblenden_k_o_z();
+       //tODO: Farbwert + 1;
     }
     public void btn_spielerloeschen(View view){
         CharSequence spieler[] = Spieler.toArray(new CharSequence[Spieler.size()]);;

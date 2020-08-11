@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
+
     //EditText
     EditText tp_spieler;
     //TextView
@@ -48,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
         Context c = getBaseContext();
         dbAufgaben.CreateDatabase(getBaseContext());
         dbAufgaben.TabelleLeeren(getBaseContext());
-        dbAufgaben.CreateRecord(getBaseContext(),"Hallo ich wurde erstellt0! :)",1);
-        dbAufgaben.CreateRecord(getBaseContext(),"Hallo ich wurde erstellt1! :)",2);
+        //dbAufgaben.CreateRecord(getBaseContext(),"Hallo ich wurde erstellt0! :)",1);
+       // dbAufgaben.CreateRecord(getBaseContext(),"Hallo ich wurde erstellt1! :)",2);
     //    dbAufgaben.CreateRecord(getBaseContext(),"Hallo ich wurde erstellt2! :)",3);
       //  dbAufgaben.CreateRecord(getBaseContext(),"Hallo ich wurde erstellt3! :)",4);
         //Todo: aufrufen und erstellen der Aufgaben
