@@ -6,9 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,7 +37,6 @@ public class Hauptspiel extends AppCompatActivity {
     //Imports generierung
     //Zufallgenerator
     Random r= new java.util.Random();
-    DBAufgaben dbAufgaben=new DBAufgaben();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,17 +88,26 @@ public class Hauptspiel extends AppCompatActivity {
        //tODO: Farbwert + 1;
     }
     public void btn_spielerloeschen(View view){
+        Spieler.add("Spieler hinzufügen");
         CharSequence spieler[] = Spieler.toArray(new CharSequence[Spieler.size()]);;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.alter_spielerfrage));
         builder.setItems(spieler, new DialogInterface.OnClickListener() {
+
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (Spieler.size()!=2){
+                if (Spieler.size()-1==which){
+                    //ToDo: Dialogbox zum eintragen Spielername
+                    Spieler.add("fotze!");
+                    Spieler.remove(Spieler.size()-2);
+                }
+                else if (Spieler.size()>3){
                     Toast.makeText(getApplicationContext(),Spieler.get(which)+" "+ getResources().getString(R.string.t_loschen),Toast.LENGTH_SHORT).show();
                     Spieler.remove(which);
+                    Spieler.remove(Spieler.size()-1);
                 } else {
                     wenigSpieler();
+                    Spieler.remove(Spieler.size()-1);
                 }
                 tv_aufgabe.setText(String.valueOf(which));
             }
@@ -171,6 +182,7 @@ public class Hauptspiel extends AppCompatActivity {
         int id = r.nextInt(numberpicker)+1;
         return String.valueOf(id);
     }
+    //Alert wenn zu Wenig Spieler bei löschen
     public void wenigSpieler(){
         AlertDialog.Builder alterDialog = new AlertDialog.Builder(this);
         alterDialog.setTitle(getResources().getString(R.string.alter_spielerloeschen_title));

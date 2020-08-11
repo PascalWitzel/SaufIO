@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -46,15 +48,14 @@ public class MainActivity extends AppCompatActivity {
         np.setMaxValue(5);
         np.setOnValueChangedListener(onValueChangeListener);
         //Todo: erstellen der Database
-        DBAufgaben dbAufgaben =new DBAufgaben();
-        Context c = getBaseContext();
-        dbAufgaben.CreateDatabase(getBaseContext());
-        dbAufgaben.TabelleLeeren(getBaseContext());
-        //dbAufgaben.CreateRecord(getBaseContext(),"Hallo ich wurde erstellt0! :)",1);
-       // dbAufgaben.CreateRecord(getBaseContext(),"Hallo ich wurde erstellt1! :)",2);
-    //    dbAufgaben.CreateRecord(getBaseContext(),"Hallo ich wurde erstellt2! :)",3);
-      //  dbAufgaben.CreateRecord(getBaseContext(),"Hallo ich wurde erstellt3! :)",4);
         //Todo: aufrufen und erstellen der Aufgaben
+
+        DatabaseHandler d = new DatabaseHandler(this);
+        d.addAufgabe(new Aufgabe(1,"fotzkopf"));
+        Log.i("TEST",String.valueOf(d.getAufgabeCount()));
+        Aufgabe a=d.getAufgabe(d.getAufgabeCount()-1);
+        String x=a.getAufgabe();
+        Log.i("TEST",x);
     }
 
     public void btn_zumSpiel(View view) {
