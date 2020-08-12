@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -33,7 +34,6 @@ public class Hauptspiel extends AppCompatActivity {
     int zufallszahl, zufallspieler;
     //Array
     ArrayList<String> Spieler;
-
     //Imports generierung
     //Zufallgenerator
     Random r= new java.util.Random();
@@ -46,10 +46,6 @@ public class Hauptspiel extends AppCompatActivity {
         tv_aufgabe=(TextView)findViewById(R.id.tv_aufgabe);
         TextView tv =(TextView)findViewById(R.id.textView);
         Spieler = (ArrayList<String>) getIntent().getSerializableExtra("key");
-
-
-        //dbAufgaben.CreateRecord(getBaseContext(),"WerrdeichgenommenFotze");
-//        tv.setText(dbAufgaben.Querywert(getBaseContext(),1));
     }
 
     @Override
@@ -62,14 +58,12 @@ public class Hauptspiel extends AppCompatActivity {
                         //Todo: Spielerstatistiken und Gesamtstatistik
                         Intent intent = new Intent(Hauptspiel.this,MainActivity.class);
                         startActivity(intent);
-
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
                         break;
                 }
             }
         };
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.alter_spielende_title));
         builder.setMessage(getResources().getString(R.string.alter_spielende_title)).setPositiveButton(getResources().getString(R.string.yes), dialogClickListener)
@@ -99,8 +93,8 @@ public class Hauptspiel extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 if (Spieler.size()-1==which){
                     //ToDo: Dialogbox zum eintragen Spielername
-                    Spieler.add("fotze!");
-                    Spieler.remove(Spieler.size()-2);
+                    Spieler.remove(Spieler.size()-1);
+                    Spieleradd();
                 }
                 else if (Spieler.size()>3){
                     Toast.makeText(getApplicationContext(),Spieler.get(which)+" "+ getResources().getString(R.string.t_loschen),Toast.LENGTH_SHORT).show();
@@ -154,7 +148,6 @@ public class Hauptspiel extends AppCompatActivity {
         btn_kopf = (Button)findViewById(R.id.btn_kopf);
         btn_zahl = (Button)findViewById(R.id.btn_zahl);
         btn_zufall = (Button)findViewById(R.id.btn_zufall);
-
         btn_zahl.setVisibility(View.INVISIBLE);
         btn_kopf.setVisibility(View.INVISIBLE);
         btn_zufall.setVisibility(View.VISIBLE);
@@ -165,12 +158,10 @@ public class Hauptspiel extends AppCompatActivity {
         btn_kopf = (Button)findViewById(R.id.btn_kopf);
         btn_zahl = (Button)findViewById(R.id.btn_zahl);
         btn_zufall = (Button)findViewById(R.id.btn_zufall);
-
         btn_zahl.setVisibility(View.VISIBLE);
         btn_kopf.setVisibility(View.VISIBLE);
         btn_zufall.setVisibility(View.INVISIBLE);
     }
-
 
     //Alert wenn zu Wenig Spieler bei löschen
     public void wenigSpieler(){
@@ -185,5 +176,29 @@ public class Hauptspiel extends AppCompatActivity {
         });
         alterDialog.create();
         alterDialog.show();
+    }
+
+    public void Spieleradd(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Title");
+        builder.setMessage("Hallo");
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_DATETIME_VARIATION_NORMAL);
+        builder.setView(input);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Spieler.add(input.getText().toString());
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
     }
 }
