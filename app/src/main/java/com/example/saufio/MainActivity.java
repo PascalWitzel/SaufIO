@@ -9,7 +9,9 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.NumberPicker;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -40,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         tp_spieler=(EditText)findViewById(R.id.tp_spieler);
         tv_spieler1 =(TextView) findViewById(R.id.tv_Spieler);
-
         Spielertxt=getResources().getString(R.string.spielernamen);
         //erstellen Numberpicker
         NumberPicker np = findViewById(R.id.numberPicker);
@@ -50,12 +52,9 @@ public class MainActivity extends AppCompatActivity {
         //Todo: erstellen der Database
         //Todo: aufrufen und erstellen der Aufgaben
 
-        DatabaseHandler d = new DatabaseHandler(this);
-        d.addAufgabe(new Aufgabe(1,"fotzkopf"));
-        Log.i("TEST",String.valueOf(d.getAufgabeCount()));
-        Aufgabe a=d.getAufgabe(d.getAufgabeCount()-1);
-        String x=a.getAufgabe();
-        Log.i("TEST",x);
+        Aufgabe a = new Aufgabe(1,null);
+        a.getAddGameaufgabe(this);
+
     }
 
     public void btn_zumSpiel(View view) {
@@ -81,14 +80,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Numberpicker
-        public void btn_add(View view) {
+        public void btn_add(View view) throws InterruptedException {
         AlertDialog.Builder alterDialog = new AlertDialog.Builder(this);
         if (tp_spieler.getText().length() != 0){
             Spieler.add(tp_spieler.getText().toString());
             Spielertxt = Spielertxt +" "+tp_spieler.getText().toString() + ",";
             tv_spieler1.setText(Spielertxt.toString().substring(0,Spielertxt.length()-2));
-            Toast.makeText(getApplicationContext(),tp_spieler.getText().toString()+" "+getResources().getString(R.string.t_add),Toast.LENGTH_SHORT).show();
             tp_spieler.setText("");
+            // Verstecke Keybord
+            InputMethodManager keybord = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            keybord.hideSoftInputFromWindow(tp_spieler.getWindowToken(), 0);
+            Toast x= Toast.makeText(getApplicationContext(),tp_spieler.getText().toString()+" "+getResources().getString(R.string.t_add),Toast.LENGTH_SHORT);
+            x.setGravity(Gravity.BOTTOM,0,0);
+            x.show();
         } else
             alterDialog.setTitle(getResources().getString(R.string.alter_spielername_title));
         alterDialog.setMessage(getResources().getString(R.string.alter_spielername_title));
@@ -98,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
     NumberPicker.OnValueChangeListener onValueChangeListener = new 	NumberPicker.OnValueChangeListener(){
                 @Override
                 public void onValueChange(NumberPicker numberPicker, int i, int i1) {

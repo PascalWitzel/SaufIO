@@ -44,9 +44,10 @@ public class Hauptspiel extends AppCompatActivity {
         setContentView(R.layout.activity_hauptspiel);
         tv_spieler1111 = (TextView)findViewById(R.id.tv_spieleranzeige);
         tv_aufgabe=(TextView)findViewById(R.id.tv_aufgabe);
-        tv_aufgabe.setText(aufgabebekommen());
         TextView tv =(TextView)findViewById(R.id.textView);
         Spieler = (ArrayList<String>) getIntent().getSerializableExtra("key");
+
+
         //dbAufgaben.CreateRecord(getBaseContext(),"WerrdeichgenommenFotze");
 //        tv.setText(dbAufgaben.Querywert(getBaseContext(),1));
     }
@@ -170,18 +171,7 @@ public class Hauptspiel extends AppCompatActivity {
         btn_zufall.setVisibility(View.INVISIBLE);
     }
 
-    public String aufgabebekommen(){
-        /*DBAufgaben dbAufgaben=new DBAufgaben();
-        int id = dbAufgaben.Highid(getBaseContext());
-        String aufgabe = null;
-        while (aufgabe == null) {
-            id = r.nextInt(id);
-            aufgabe=dbAufgaben.Querywert(getBaseContext(),id);
-        }*/
-        int numberpicker = getIntent().getIntExtra("key2",1);
-        int id = r.nextInt(numberpicker)+1;
-        return String.valueOf(id);
-    }
+
     //Alert wenn zu Wenig Spieler bei löschen
     public void wenigSpieler(){
         AlertDialog.Builder alterDialog = new AlertDialog.Builder(this);
