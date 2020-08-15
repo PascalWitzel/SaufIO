@@ -1,4 +1,4 @@
-package com.example.saufio;
+package com.example.saufio.sampledata;
 
 import android.content.Context;
 
@@ -33,52 +33,15 @@ public class Aufgabe {
         return aufgabe.getAufgabe();
     }
 
+
     public void getAddGameaufgabe(Context c){
         DatabaseHandler d = new DatabaseHandler(c);
         Aufgabe a = new Aufgabe(1,"");
-        a.setAufgabe("Ich soll geseztz werden");
+        d.deleteTabeleLeeren();
         d.addAufgabe(a);
         a.setAufgabe("Ich soll geseztz werden2");
         d.addAufgabe(a);
         a.setAufgabe("Ich soll geseztz werden");
-        d.addAufgabe(a);
-        a.setAufgabe("Ich soll geseztz werden2");
-        d.addAufgabe(a);
-        a.setAufgabe("Ich soll geseztz werden");
-        d.addAufgabe(a);
-        a.setAufgabe("Ich soll geseztz werden2");
-        d.addAufgabe(a);
-        a.setAufgabe("Ich soll geseztz werden");
-        d.addAufgabe(a);
-        a.setAufgabe("Ich soll geseztz werden2");
-        d.addAufgabe(a);
-        a.setAufgabe("Ich soll geseztz werden");
-        d.addAufgabe(a);
-        a.setAufgabe("Ich soll geseztz werden2");
-        d.addAufgabe(a);
-        a.setAufgabe("Ich soll geseztz werden");
-        d.addAufgabe(a);
-        a.setAufgabe("Ich soll geseztz werden2");
-        d.addAufgabe(a);
-        a.setAufgabe("Ich soll geseztz werden");
-        d.addAufgabe(a);
-        a.setAufgabe("Ich soll geseztz werden2");
-        d.addAufgabe(a);
-        a.setAufgabe("Ich soll geseztz werden");
-        d.addAufgabe(a);
-        a.setAufgabe("Ich soll geseztz werden2");
-        d.addAufgabe(a);
-        a.setAufgabe("Ich soll geseztz werden");
-        d.addAufgabe(a);
-        a.setAufgabe("Ich soll geseztz werden2");
-        d.addAufgabe(a);
-        a.setAufgabe("Ich soll geseztz werden");
-        d.addAufgabe(a);
-        a.setAufgabe("Ich soll geseztz werden2");
-        d.addAufgabe(a);
-        a.setAufgabe("Ich soll geseztz werden");
-        d.addAufgabe(a);
-        a.setAufgabe("Ich soll geseztz werden2_neu");
         d.addAufgabe(a);
     }
 }

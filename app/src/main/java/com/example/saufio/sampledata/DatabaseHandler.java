@@ -1,4 +1,4 @@
-package com.example.saufio;
+package com.example.saufio.sampledata;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -76,6 +76,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             return null;
         }
     }
+
+    public Aufgabe sucheUeberTxt(String suche) {
+        Aufgabe aufgabe = new Aufgabe();
+        String selectQuery = "SELECT  * FROM " + TABLE_AUFGABE + " where " + KEY_AUFGABETXT + "='" + suche+"'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            aufgabe.setId(Integer.parseInt(cursor.getString(0)));
+            aufgabe.setAufgabe(cursor.getString(1));
+        }
+        Log.i("Database", aufgabe.getAufgabe()+"   "+aufgabe.id);
+        return aufgabe;
+    }
+
     public List<String> getAllAufgabeString () {
         List<String> aufgabeList = new ArrayList<String>();
         String selectQuery = "SELECT  * FROM " + TABLE_AUFGABE;

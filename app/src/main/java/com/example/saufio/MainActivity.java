@@ -6,24 +6,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.saufio.sampledata.Allgemein;
+import com.example.saufio.sampledata.Aufgabe;
+
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends AppCompatActivity {
-
     //EditText
     EditText tp_spieler;
     //TextView
@@ -35,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     //int
     int numberpicker=1;
     //erstellen Objekte
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,34 +51,24 @@ public class MainActivity extends AppCompatActivity {
 
         Aufgabe a = new Aufgabe(1,null);
         a.getAddGameaufgabe(this);
-
     }
 
     public void btn_zumSpiel(View view) {
         if (Spieler.size()>=2) {
-            Intent i = new Intent(MainActivity.this, Hauptspiel.class);
+            //Intent i = new Intent(MainActivity.this, Hauptspiel.class);
+            Intent i = new Intent(MainActivity.this, ac_aufgaben.class);
             i.putExtra("key", Spieler);
             i.putExtra("key2",numberpicker);
             startActivity(i);
         }
         //wenn zu wenig Spieler
         else {
-            AlertDialog.Builder alterDialog = new AlertDialog.Builder(this);
-            alterDialog.setTitle(getResources().getString(R.string.alter_spieler_title));
-            alterDialog.setMessage(getResources().getString(R.string.alter_spieler_message));
-            alterDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    }
-            });
-            alterDialog.create();
-            alterDialog.show();
+            Allgemein.alertOK(this,getResources().getString(R.string.alter_spielername_title),getResources().getString(R.string.alter_spielername_message),getResources().getString(R.string.ok));
         }
     }
 
     //Numberpicker
         public void btn_add(View view) throws InterruptedException {
-        AlertDialog.Builder alterDialog = new AlertDialog.Builder(this);
         if (tp_spieler.getText().length() != 0){
             Spieler.add(tp_spieler.getText().toString());
             Spielertxt = Spielertxt +" "+tp_spieler.getText().toString() + ",";
@@ -94,14 +81,9 @@ public class MainActivity extends AppCompatActivity {
             x.setGravity(Gravity.BOTTOM,0,0);
             x.show();
         } else
-            alterDialog.setTitle(getResources().getString(R.string.alter_spielername_title));
-        alterDialog.setMessage(getResources().getString(R.string.alter_spielername_title));
-        alterDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-            }
-        });
+            Allgemein.alertOK(this,getResources().getString(R.string.alter_spielername_title),getResources().getString(R.string.alter_spielername_message),getResources().getString(R.string.ok));
     }
+
     NumberPicker.OnValueChangeListener onValueChangeListener = new 	NumberPicker.OnValueChangeListener(){
                 @Override
                 public void onValueChange(NumberPicker numberPicker, int i, int i1) {
