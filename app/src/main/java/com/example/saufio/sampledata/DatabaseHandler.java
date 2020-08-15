@@ -17,12 +17,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_AUFGABE = "aufgabetb";
     private static final String KEY_ID = "id";
     private static final String KEY_AUFGABETXT = "aufgabetxt";
+    private static final String KEY_KATEGORIE = "kategorie";
+    private static final String KEY_AENDERUNG ="aenderung";
+
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        //3rd argument to be passed is CursorFactory instance
     }
 
+    //Todo: Tabelle überarbeiten: ID, Augabe,Kategorie ,Löschbar(J,N,B),
     // Erstelle Tabelle
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -72,6 +75,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             Log.i("Database", String.valueOf(e));
             return null;
         }
+    }
+    public List<String> getAllAufgabeString () {
+        List<String> aufgabeList = new ArrayList<String>();
+        String selectQuery = "SELECT  * FROM " + TABLE_AUFGABE;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Aufgabe aufgabe = new Aufgabe();
+                aufgabe.setId(Integer.parseInt(cursor.getString(0)));
+                aufgabe.setAufgabe(cursor.getString(1));
+                aufgabeList.add(aufgabe.getAufgabe());
+            } while (cursor.moveToNext());
+        }
+        // return list
+        Log.i("Database", "Aufgabe Liste: " + aufgabeList);
+        return aufgabeList;
     }
         // alle aufgaben in List
     public List<Aufgabe> getAllAufgabe () {
