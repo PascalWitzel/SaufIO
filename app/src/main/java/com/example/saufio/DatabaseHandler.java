@@ -146,7 +146,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Log.i("Database","Update Aufgabe:+ "+aufgabe.getAufgabe());
         return db.update(TABLE_AUFGABE, values, KEY_ID + " = ?",
                 new String[]{String.valueOf(aufgabe.getId())});
-
     }
 
     // Lösche aufgabe

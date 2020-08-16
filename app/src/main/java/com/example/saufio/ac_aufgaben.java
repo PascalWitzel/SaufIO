@@ -2,7 +2,9 @@ package com.example.saufio;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.renderscript.Sampler;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
@@ -60,24 +62,25 @@ public class ac_aufgaben extends AppCompatActivity {
             menu.add(0, v.getId(), 0, menu_bearbeiten);
             menu.add(0, v.getId(), 0, menu_loeschen);
         } else {
-            //Todo: nächste Activity öffnen
+            Intent intent = new Intent(ac_aufgaben.this,AC_bearbeiten.class);
+            startActivity(intent);
         }
     }
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        Aufgabe a= db.sucheUeberTxt(aufgabe.get(auswahl));
         if (menu_loeschen==item.getTitle()) {
-            Aufgabe a= db.sucheUeberTxt(aufgabe.get(auswahl));
             if (a.getAenderung()=="N"){
 
             } else {
                 db.deleteAufgabe(a);
                 listviewRefresh();
             }
-
-
-
         } else if (menu_bearbeiten==item.getTitle()){
             //todo: Aufgabe in nächste Activty
+            Intent intent = new Intent(ac_aufgaben.this,AC_bearbeiten.class);
+            intent.putExtra("IDAufgabe",a.getId());
+            startActivity(intent);
         }
         return true;
     }
