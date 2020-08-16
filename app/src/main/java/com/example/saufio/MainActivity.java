@@ -1,10 +1,8 @@
 package com.example.saufio;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -14,9 +12,6 @@ import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.saufio.sampledata.Allgemein;
-import com.example.saufio.sampledata.Aufgabe;
 
 import java.util.ArrayList;
 
@@ -46,11 +41,9 @@ public class MainActivity extends AppCompatActivity {
         np.setMinValue(1);
         np.setMaxValue(5);
         np.setOnValueChangedListener(onValueChangeListener);
-        //Todo: erstellen der Database
-        //Todo: aufrufen und erstellen der Aufgaben
 
-        Aufgabe a = new Aufgabe(1,null);
-        a.getAddGameaufgabe(this);
+        //Todo: aufrufen und erstellen der Aufgaben
+        Aufgabe.getAddGameaufgabe(this);
     }
 
     public void btn_zumSpiel(View view) {

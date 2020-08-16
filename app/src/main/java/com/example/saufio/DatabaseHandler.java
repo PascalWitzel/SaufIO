@@ -1,4 +1,4 @@
-package com.example.saufio.sampledata;
+package com.example.saufio;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -12,7 +12,7 @@ import java.util.List;
 
 
 public class DatabaseHandler extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "aufgabedb";
     private static final String TABLE_AUFGABE = "aufgabetb";
     private static final String KEY_ID = "id";
@@ -24,13 +24,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
-
-    //Todo: Tabelle überarbeiten: ID, Augabe,Kategorie ,Löschbar(J,N,B),
     // Erstelle Tabelle
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_AUFGABE + "("
-                + KEY_ID + " INTEGER PRIMARY KEY," + KEY_AUFGABETXT + " TEXT" + ")";
+                + KEY_ID + " INTEGER PRIMARY KEY," + KEY_AUFGABETXT + " TEXT,"+KEY_AENDERUNG+" TEXT,"+KEY_KATEGORIE+" TEXT)";
         db.execSQL(CREATE_CONTACTS_TABLE);
         Log.i("Database","Create Table");
     }
@@ -50,8 +48,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_AUFGABETXT, aufgabe.getAufgabe());
+        values.put(KEY_AENDERUNG,aufgabe.getAenderung());
+        values.put(KEY_KATEGORIE,aufgabe.getKategorie());
+        Log.i("TEST",values.toString());
         // Inserting Row
-        db.insert(TABLE_AUFGABE, null, values);
+        try {
+            db.insert(TABLE_AUFGABE, null, values);
+        } catch (Exception e){
+            Log.i("Database1",String.valueOf(e));
+        }
+
         //2nd argument is String containing nullColumnHack
         db.close(); // Closing database connection
         Log.i("Database","Aufgabe hinzugefügt: "+aufgabe.getAufgabe());
@@ -60,21 +66,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // einzelne Aufgabe bekommen
     Aufgabe getAufgabe(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
-
         Cursor cursor = db.query(TABLE_AUFGABE, new String[]{KEY_ID,
-                        KEY_AUFGABETXT}, KEY_ID + "=?",
+                        KEY_AUFGABETXT,KEY_AENDERUNG,KEY_KATEGORIE}, KEY_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
-        if (cursor != null)
+
+        if (cursor != null) {
             cursor.moveToFirst();
-        try {
-            Aufgabe aufgabe = new Aufgabe(Integer.parseInt(cursor.getString(0)), cursor.getString(1));
-            // return contact
-            Log.i("Database","Aufgabe bekommmen: "+aufgabe.getAufgabe());
-            return aufgabe;
-        } catch (Exception e) {
-            Log.i("Database", String.valueOf(e));
-            return null;
         }
+            Aufgabe aufgabe = new Aufgabe(1,null,null,null);
+            aufgabe.setId(Integer.parseInt(cursor.getString(0)));
+            aufgabe.setAufgabe(cursor.getString(1));
+            aufgabe.setAenderung(cursor.getString(2));
+            aufgabe.setKategorie(cursor.getString(3));
+            Log.i("Database","Aufgabe bekommmen: "+aufgabe.getAufgabe());
+            cursor.close();
+            db.close();
+            return aufgabe;
     }
 
     public Aufgabe sucheUeberTxt(String suche) {
@@ -85,6 +92,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             aufgabe.setId(Integer.parseInt(cursor.getString(0)));
             aufgabe.setAufgabe(cursor.getString(1));
+            aufgabe.setAufgabe(cursor.getString(2));
+            aufgabe.setAufgabe(cursor.getString(3));
         }
         Log.i("Database", aufgabe.getAufgabe()+"   "+aufgabe.id);
         return aufgabe;
@@ -100,6 +109,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 Aufgabe aufgabe = new Aufgabe();
                 aufgabe.setId(Integer.parseInt(cursor.getString(0)));
                 aufgabe.setAufgabe(cursor.getString(1));
+                aufgabe.setAenderung(cursor.getString(2));
+                aufgabe.setKategorie(cursor.getString(3));
                 aufgabeList.add(aufgabe.getAufgabe());
             } while (cursor.moveToNext());
         }
@@ -107,7 +118,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Log.i("Database", "Aufgabe Liste: " + aufgabeList);
         return aufgabeList;
     }
-        // alle aufgaben in List
+    // alle aufgaben in List
     public List<Aufgabe> getAllAufgabe () {
         List<Aufgabe> aufgabeList = new ArrayList<Aufgabe>();
         String selectQuery = "SELECT  * FROM " + TABLE_AUFGABE;
@@ -121,31 +132,31 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 aufgabeList.add(aufgabe);
             } while (cursor.moveToNext());
         }
-            // return list
+        // return list
         Log.i("Database","Aufgabe Liste: " + aufgabeList);
         return aufgabeList;
     }
 
-        // einzelne Aufgabe upgrade
+    // einzelne Aufgabe upgrade
     public int updateAufgabe (Aufgabe aufgabe){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_AUFGABETXT, aufgabe.getAufgabe());
         // updating row
         Log.i("Database","Update Aufgabe:+ "+aufgabe.getAufgabe());
-         return db.update(TABLE_AUFGABE, values, KEY_ID + " = ?",
-            new String[]{String.valueOf(aufgabe.getId())});
+        return db.update(TABLE_AUFGABE, values, KEY_ID + " = ?",
+                new String[]{String.valueOf(aufgabe.getId())});
 
     }
 
-       // Lösche aufgabe
+    // Lösche aufgabe
     public void deleteAufgabe (Aufgabe aufgabe){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_AUFGABE, KEY_ID + " = ?",
-            new String[]{String.valueOf(aufgabe.getId())});
+                new String[]{String.valueOf(aufgabe.getId())});
         db.close();
         Log.i("Database","Aufgabe gelöscht "+aufgabe.getId()+" "+aufgabe.getAufgabe());
-        }
+    }
 
     public void deleteTabeleLeeren () {
         SQLiteDatabase db = this.getWritableDatabase();

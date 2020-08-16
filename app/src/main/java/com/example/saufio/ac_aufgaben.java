@@ -12,11 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.saufio.sampledata.DatabaseHandler;
-
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ac_aufgaben extends AppCompatActivity {
 
@@ -28,12 +24,15 @@ public class ac_aufgaben extends AppCompatActivity {
     ArrayAdapter<String> arrayAdapter;
     int auswahl;
     DatabaseHandler db = new DatabaseHandler(this);
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ac_aufgaben);
         //Listview adapter
         listView = (ListView) findViewById(R.id.listview);
+        DatabaseHandler db = new DatabaseHandler(this);
         aufgabe = db.getAllAufgabeString();
         aufgabe.add(0,"Aufgabe hinzufügen");
         arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, aufgabe);
@@ -55,20 +54,30 @@ public class ac_aufgaben extends AppCompatActivity {
         super.onCreateContextMenu(menu, v, menuInfo);
         ListView lv = (ListView) listView;
         AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        auswahl= (int) lv.getItemIdAtPosition(acmi.position);
-        menu.setHeaderTitle("Datensatz");
-        menu.add(0, v.getId(), 0, menu_bearbeiten);
-        menu.add(0, v.getId(), 0, menu_loeschen);
+        auswahl = (int) lv.getItemIdAtPosition(acmi.position);
+        if (auswahl != 0) {
+            menu.setHeaderTitle("Datensatz");
+            menu.add(0, v.getId(), 0, menu_bearbeiten);
+            menu.add(0, v.getId(), 0, menu_loeschen);
+        } else {
+            //Todo: nächste Activity öffnen
+        }
     }
-
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         if (menu_loeschen==item.getTitle()) {
-            db.deleteAufgabe(db.sucheUeberTxt(aufgabe.get(auswahl)));
-            listviewRefresh();
+            Aufgabe a= db.sucheUeberTxt(aufgabe.get(auswahl));
+            if (a.getAenderung()=="N"){
+
+            } else {
+                db.deleteAufgabe(a);
+                listviewRefresh();
+            }
+
+
 
         } else if (menu_bearbeiten==item.getTitle()){
-            //Todo: Aufgabe bearbeiten
+            //todo: Aufgabe in nächste Activty
         }
         return true;
     }

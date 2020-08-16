@@ -1,6 +1,9 @@
-package com.example.saufio.sampledata;
+package com.example.saufio;
+
+
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.Random;
 
@@ -8,11 +11,15 @@ public class Aufgabe {
 
     int id;
     String aufgabe;
+    String aenderung;
+    String kategorie;
 
     public Aufgabe(){}
-    public Aufgabe(int id, String aufgabe){
+    public Aufgabe(int id, String aufgabe, String aenderung,String kategorie){
         this.id=id;
         this.aufgabe=aufgabe;
+        this.aenderung=aenderung;
+        this.kategorie=kategorie;
     }
 
     //Getter und Setter ID
@@ -24,6 +31,15 @@ public class Aufgabe {
     public void  setAufgabe(String aufgabe){this.aufgabe=aufgabe;
     }
 
+    //Getter und Setter aenderung
+    public String getAenderung(){return this.aenderung;}
+    public void setAenderung(String aenderung){this.aenderung=aenderung;}
+
+    //Getter und Setter Kategorie
+    public String getKategorie(){return this.kategorie;}
+    public void setKategorie(String kategorie){this.kategorie=kategorie;}
+
+
     public String getAufgabeDB (Context c){
         DatabaseHandler d = new DatabaseHandler(c);
         Aufgabe aufgabe;
@@ -34,18 +50,14 @@ public class Aufgabe {
     }
 
 
-    public void getAddGameaufgabe(Context c){
+    public static void getAddGameaufgabe(Context c){
         DatabaseHandler d = new DatabaseHandler(c);
-        Aufgabe a = new Aufgabe(1,"");
-        d.deleteTabeleLeeren();
+        Aufgabe a = new Aufgabe(1,"TESTFOTZE","N","WennIchDuWäre");
         d.addAufgabe(a);
-        a.setAufgabe("Ich soll geseztz werden2");
-        d.addAufgabe(a);
-        a.setAufgabe("Ich soll geseztz werden");
-        d.addAufgabe(a);
+
+
     }
 }
-
 
 
 
