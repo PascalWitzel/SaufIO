@@ -54,8 +54,9 @@ public class Aufgabe {
         DatabaseHandler d = new DatabaseHandler(c);
         Aufgabe a = new Aufgabe(1,"TESTFOTZE","N","WennIchDuWäre");
         d.addAufgabe(a);
-        a.setAufgabe("TEST34");
-        d.updateAufgabe(a);
+        d.addAufgabe(a);
+        Aufgabe ab = new Aufgabe(1,"TESTFOTZENeumitder2","N","WennIchDuWäre2");
+        d.addAufgabe(ab);
 
 
     }

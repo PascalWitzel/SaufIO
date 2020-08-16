@@ -189,4 +189,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             return 0;
         }
     }
+
+    public List<String> getKategorien() {
+        List<String> kategorieList = new ArrayList<String>();
+        String selectQuery = "SELECT max("+KEY_KATEGORIE+"),"+KEY_KATEGORIE+" FROM " + TABLE_AUFGABE +" group by "+KEY_KATEGORIE;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                kategorieList.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+        // return list
+        Log.i("Database", "Aufgabe Liste: " + kategorieList);
+        return kategorieList;
+    }
 }
