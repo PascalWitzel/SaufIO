@@ -11,8 +11,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="124dp"
-        android:text="Button"
+        android:hint="@string/Aufgabeadden"
         android:onClick="aufgabe_update_add"
+        android:text="@string/Aufgabeadd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,11 +22,14 @@
     <EditText
         android:id="@+id/et_Aufgabe"
         android:layout_width="352dp"
-        android:layout_height="194dp"
+        android:layout_height="0dp"
         android:layout_marginTop="68dp"
+        android:layout_marginBottom="44dp"
         android:ems="10"
         android:gravity="start|top"
+        android:hint="@string/hint_aufgabe"
         android:inputType="textMultiLine"
+        app:layout_constraintBottom_toTopOf="@+id/spinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.398"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,8 +37,16 @@
 
     <Spinner
         android:id="@+id/spinner"
-        android:layout_width="409dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="306dp" />
+        android:layout_marginStart="1dp"
+        android:layout_marginLeft="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginRight="1dp"
+        android:layout_marginBottom="401dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_Aufgabe" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

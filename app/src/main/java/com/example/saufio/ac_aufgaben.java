@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.Random;
 
 public class ac_aufgaben extends AppCompatActivity {
 
@@ -36,6 +37,11 @@ public class ac_aufgaben extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.listview);
         DatabaseHandler db = new DatabaseHandler(this);
         aufgabe = db.getAllAufgabeString();
+        for (int i=0;i<aufgabe.size();i++){
+            String aufgabetxt = aufgabe.get(i);
+            aufgabetxt=aufgabetxt.replace("$",String.valueOf(new Random().nextInt(5)+1));
+            aufgabe.set(i, aufgabetxt);
+        }
         aufgabe.add(0,getResources().getString(R.string.Aufgabeadd));
         arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, aufgabe);
         listView.setAdapter(arrayAdapter);

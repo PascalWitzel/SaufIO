@@ -4,17 +4,21 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Random;
 
 public class Hauptspiel extends AppCompatActivity {
@@ -23,15 +27,23 @@ public class Hauptspiel extends AppCompatActivity {
     ImageView img_muenze;
     //Button
     Button btn_zahl, btn_kopf, btn_zufall;
+    //ImageButton
+    ImageButton btnimg_ton;
     //TextView
-    TextView tv_spieler1111, tv_aufgabe;
+    TextView tv_spieler1111, tv_aufgabe, tv_aufgabenzahl;
     //INT
-    int zufallszahl, zufallspieler;
+    int zufallszahl, zufallspieler, max_shots;
+    //Strings
+    String spieler;
     //Array
     ArrayList<String> Spieler;
-    //Imports generierung
+    ArrayList<String> aufgabelist;
     //Zufallgenerator
     Random r= new java.util.Random();
+    //TextToSpeech
+    TextToSpeech textspeech;
+    //Imports
+    DatabaseHandler db = new DatabaseHandler(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +51,26 @@ public class Hauptspiel extends AppCompatActivity {
         setContentView(R.layout.activity_hauptspiel);
         tv_spieler1111 = (TextView)findViewById(R.id.tv_spieleranzeige);
         tv_aufgabe=(TextView)findViewById(R.id.tv_aufgabe);
-        TextView tv =(TextView)findViewById(R.id.textView);
+        tv_aufgabenzahl=(TextView)findViewById(R.id.tv_aufgabenvorhanden);
+        btnimg_ton=(ImageButton)findViewById(R.id.btn_ton);
         Spieler = (ArrayList<String>) getIntent().getSerializableExtra("key");
+        max_shots = getIntent().getIntExtra("key2",1);
+        //Aufgabe vorlesen
+        textspeech=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    textspeech.setLanguage(Locale.GERMANY);
+                }
+            }
+        });
+        aufgabelist= (ArrayList<String>) db.aufgabeKategorie(getIntent().getStringExtra("key3"));
+        Spielerauswaehlen();
+        tv_aufgabenzahl.setText(getResources().getString(R.string.aufgabevorhanden)+aufgabelist.size());
+        setzeTonbild(Allgemein.gebeTon(this));
     }
 
+    //Zurücktaste
     @Override
     public void onBackPressed(){
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -87,7 +115,6 @@ public class Hauptspiel extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (Spieler.size()-1==which){
-                    //ToDo: Dialogbox zum eintragen Spielername
                     Spieler.remove(Spieler.size()-1);
                     Spieleradd();
                 }
@@ -105,11 +132,31 @@ public class Hauptspiel extends AppCompatActivity {
         builder.show();
     }
 
+
+    public void btn_tonsetzen(View view) {
+        setzeTonbild(Allgemein.tonaendern(this));
+    }
+
+
     //Eigene Methoden
     //Suche einen Zufälligen  Spieler
     public void Spielerauswaehlen(){
+        if (aufgabelist.size()==0) {
+            AlertDialog.Builder alterDialog = new AlertDialog.Builder(this);
+            alterDialog.setTitle("Keine Aufgaben mehr");
+            alterDialog.setMessage("Es gibt keine Aufgaben mehr! Ihr habt das Spiel fertig");
+            alterDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    startActivity(new Intent(Hauptspiel.this,MainActivity.class));
+                }
+            });
+            alterDialog.create();
+            alterDialog.show();
+        }
         zufallspieler = r.nextInt(Spieler.size());
-        tv_spieler1111.setText(Spieler.get(zufallszahl)+getResources().getString(R.string.entscheidung));
+        spieler =Spieler.get(zufallszahl);
+        tv_spieler1111.setText(spieler+" "+getResources().getString(R.string.entscheidung));
         img_muenze=(ImageView) findViewById(R.id.img_muenze);
         img_muenze.setVisibility(View.INVISIBLE);
     }
@@ -123,7 +170,11 @@ public class Hauptspiel extends AppCompatActivity {
             if (zufallszahl == wahl) {
                 tv_spieler1111.setText(getResources().getString(R.string.glueck_kopf));
             } else {
-                tv_spieler1111.setText(getResources().getString(R.string.pech_kopf));
+                tv_spieler1111.setText(spieler+": "+getResources().getString(R.string.pech_kopf));
+                String aufgabetxt=Aufgabe.getAufgabe(this,aufgabelist,max_shots);
+                tv_aufgabenzahl.setText(getResources().getString(R.string.aufgabevorhanden)+aufgabelist.size());
+                tv_aufgabe.setText(aufgabetxt);
+                sprachausgabe(aufgabetxt);
             }
             img_muenze.setImageResource(R.drawable.kopf);
             img_muenze.setVisibility(View.VISIBLE);
@@ -131,7 +182,11 @@ public class Hauptspiel extends AppCompatActivity {
             if (zufallszahl == wahl) {
                 tv_spieler1111.setText(getResources().getString(R.string.glueck_zahl));
             } else {
-                tv_spieler1111.setText(getResources().getString(R.string.pech_zahl));
+                tv_spieler1111.setText(spieler+": "+getResources().getString(R.string.pech_zahl));
+                String aufgabetxt=Aufgabe.getAufgabe(this,aufgabelist,max_shots);
+                tv_aufgabenzahl.setText(getResources().getString(R.string.aufgabevorhanden)+aufgabelist.size());
+                tv_aufgabe.setText(aufgabetxt);
+                sprachausgabe(aufgabetxt);
             }
             img_muenze.setImageResource(R.drawable.zahl);
             img_muenze.setVisibility(View.VISIBLE);
@@ -156,6 +211,17 @@ public class Hauptspiel extends AppCompatActivity {
         btn_zahl.setVisibility(View.VISIBLE);
         btn_kopf.setVisibility(View.VISIBLE);
         btn_zufall.setVisibility(View.INVISIBLE);
+        tv_aufgabe.setText("");
+    }
+
+    //Text to Speech, abbrechen bzw. Ausgabe
+    public void sprachausgabe(String aufgabe){
+        if (Allgemein.gebeTon(this)) {
+            if (textspeech != null) {
+                textspeech.stop();
+            }
+            textspeech.speak(aufgabe, TextToSpeech.QUEUE_FLUSH, null);
+        }
     }
 
     //Alert wenn zu Wenig Spieler bei löschen
@@ -172,7 +238,7 @@ public class Hauptspiel extends AppCompatActivity {
         alterDialog.create();
         alterDialog.show();
     }
-
+    //Spieler nachträglich hinzufügen
     public void Spieleradd(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.alter_spielerhinzufügen_title));
@@ -194,4 +260,15 @@ public class Hauptspiel extends AppCompatActivity {
         });
         builder.show();
     }
+
+    public void setzeTonbild(boolean b){
+        if (b){
+            btnimg_ton.setImageResource(R.drawable.ic_launcher_foreground);
+        }
+        else {
+            btnimg_ton.setImageResource(R.drawable.ic_launcher_background);
+        }
+
+    }
+
 }

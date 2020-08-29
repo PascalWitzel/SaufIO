@@ -192,7 +192,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public List<String> getKategorien() {
         List<String> kategorieList = new ArrayList<String>();
-        String selectQuery = "SELECT max("+KEY_KATEGORIE+"),"+KEY_KATEGORIE+" FROM " + TABLE_AUFGABE +" group by "+KEY_KATEGORIE;
+        String selectQuery = "SELECT max("+KEY_KATEGORIE+"),"+KEY_KATEGORIE+" FROM " + TABLE_AUFGABE +" group by "+KEY_KATEGORIE+" order by "+KEY_KATEGORIE;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
@@ -200,8 +200,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 kategorieList.add(cursor.getString(0));
             } while (cursor.moveToNext());
         }
-        // return list
         Log.i("Database", "Aufgabe Liste: " + kategorieList);
         return kategorieList;
+    }
+    public List<String> aufgabeKategorie(String kategorien) {
+        List<String> kategoriegefiltertList = new ArrayList<String>();
+        String selectQuery = "Select "+KEY_AUFGABETXT +" FROM " + TABLE_AUFGABE + " where "+KEY_KATEGORIE +" in ("+kategorien+") order by "+KEY_AUFGABETXT;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                kategoriegefiltertList.add(cursor.getString(0));
+                Log.i("Database", "Aufgabe gefiltert Liste: " + kategoriegefiltertList.get(0));
+            } while (cursor.moveToNext());
+        }
+        // return list
+        Log.i("Database", "Aufgabe gefiltert Liste: " + kategoriegefiltertList);
+        return kategoriegefiltertList;
     }
 }

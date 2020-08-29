@@ -3,18 +3,18 @@ package com.example.saufio;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-
+import android.content.SharedPreferences;
 import androidx.appcompat.app.AlertDialog;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import static android.content.Context.MODE_PRIVATE;
 
 public class Allgemein {
+
+    static String KEY_TON = "KEY_TON";
+    SharedPreferences sharedpreferences;
+    static SharedPreferences prefs;
+    static SharedPreferences.Editor prefsedit;
+
     public static void alertOK(Context c, String title, String message, String button) {
         AlertDialog.Builder alterDialog = new AlertDialog.Builder(c);
         alterDialog.setTitle(title);
@@ -26,5 +26,24 @@ public class Allgemein {
         });
         alterDialog.create();
         alterDialog.show();
+    }
+
+    public static boolean gebeTon(Context c){
+        final SharedPreferences prefs;
+        prefs = c.getSharedPreferences("Speicher", MODE_PRIVATE);
+        return prefs.getBoolean(KEY_TON, true);
+    }
+
+    public static boolean tonaendern(Context c) {
+        prefs = c.getSharedPreferences("Speicher", MODE_PRIVATE);
+        prefsedit = prefs.edit();
+        if (prefs.getBoolean(KEY_TON, true)) {
+            prefsedit.putBoolean(KEY_TON, false);
+            prefsedit.commit();
+        } else {
+            prefsedit.putBoolean(KEY_TON, true);
+            prefsedit.commit();
+        }
+        return prefs.getBoolean(KEY_TON, true);
     }
 }
