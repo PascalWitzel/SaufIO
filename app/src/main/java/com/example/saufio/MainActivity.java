@@ -115,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
             i.putExtra("key", Spieler);
             i.putExtra("key2", numberpicker);
             String s = gebeKategorie();//.substring(0,gebeKategorie().length()-1);
-            Log.i("HURRE!",s);
             if (s !="0"){
                 i.putExtra("key3",s);
                 startActivity(i);

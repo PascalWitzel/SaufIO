@@ -12,22 +12,23 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.List;
 import java.util.Random;
 
-public class ac_aufgaben extends AppCompatActivity {
+public class ac_aufgaben extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     String menu_loeschen;
     String menu_bearbeiten;
-
+    Spinner spinner;
     ListView listView;
     List<String> aufgabe;
     ArrayAdapter<String> arrayAdapter;
+    List<String> kategorien;
     int auswahl;
     DatabaseHandler db = new DatabaseHandler(this);
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +49,19 @@ public class ac_aufgaben extends AppCompatActivity {
         registerForContextMenu(listView);
         menu_bearbeiten=getResources().getString(R.string.change);
         menu_loeschen=getResources().getString(R.string.delete);
-
+        spinner=(Spinner)findViewById(R.id.spinner_filter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> myAdapter, View myView, int myItemInt, long mylng) {
                 int selectedFromList =(int) (listView.getItemIdAtPosition(myItemInt));
             }
         });
+        //Spinner
+        kategorien=db.getKategorien();
+        kategorien.add(0,"Alle Aufgaben");
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, kategorien);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
     }
 
     @Override
@@ -97,4 +105,31 @@ public class ac_aufgaben extends AppCompatActivity {
         arrayAdapter.addAll(aufgabe);
         listView.setAdapter(arrayAdapter);
     }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        if (i == 0) {
+            aufgabe.clear();
+            aufgabe=db.getAllAufgabeString();
+            arrayAdapter.clear();
+            arrayAdapter.addAll(aufgabe);
+            listView.setAdapter(arrayAdapter);
+        }
+        else {
+            setzeFilter(kategorien.get(i));
+        }
+    }
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
+    public void setzeFilter(String kategorie){
+        aufgabe.clear();
+        aufgabe=db.aufgabeKategorie("'"+kategorie+"'");
+        arrayAdapter.clear();
+        arrayAdapter.addAll(aufgabe);
+        listView.setAdapter(arrayAdapter);
+    }
+
 }

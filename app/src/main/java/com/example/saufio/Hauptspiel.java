@@ -78,7 +78,7 @@ public class Hauptspiel extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
-                        //Todo: Spielerstatistiken und Gesamtstatistik
+                        //Todo: Spielerstatistiken und Gesamtstatistik (Kopf und Zahl)
                         Intent intent = new Intent(Hauptspiel.this,MainActivity.class);
                         startActivity(intent);
                         break;
@@ -122,11 +122,17 @@ public class Hauptspiel extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),Spieler.get(which)+" "+ getResources().getString(R.string.t_loschen),Toast.LENGTH_SHORT).show();
                     Spieler.remove(which);
                     Spieler.remove(Spieler.size()-1);
+
                 } else {
                     wenigSpieler();
-                    Spieler.remove(Spieler.size()-1);
                 }
                 tv_aufgabe.setText(String.valueOf(which));
+            }
+        });
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                Spieler.remove(Spieler.size()-1);
             }
         });
         builder.show();
