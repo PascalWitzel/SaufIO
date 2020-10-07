@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.text.InputType;
@@ -15,20 +16,29 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
+
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Random;
 
 public class Hauptspiel extends AppCompatActivity {
 
+    private VideoView videoView1, videoView2, videoView3, videoView4;
+    private MediaController mediaController;
+    private final int Code_BB = 1;
+    private final int Code_BZ = 2;
+    private final int Code_ZB = 3;
+    private final int Code_ZZ = 4;
     //ImageView
     ImageView img_muenze;
     //Button
-    Button btn_zahl, btn_kopf, btn_zufall;
+    Button  btn_zufall;
     //ImageButton
-    ImageButton btnimg_ton;
+    ImageButton btnimg_ton, btnimg_zahl, btnimg_kopf;
     //TextView
     TextView tv_spieler1111, tv_aufgabe, tv_aufgabenzahl;
     //INT
@@ -53,6 +63,8 @@ public class Hauptspiel extends AppCompatActivity {
         tv_aufgabe=(TextView)findViewById(R.id.tv_aufgabe);
         tv_aufgabenzahl=(TextView)findViewById(R.id.tv_aufgabenvorhanden);
         btnimg_ton=(ImageButton)findViewById(R.id.btn_ton);
+        btnimg_zahl=(ImageButton)findViewById(R.id.btn_zahl);
+        btnimg_kopf=(ImageButton)findViewById(R.id.btn_kopf);
         Spieler = (ArrayList<String>) getIntent().getSerializableExtra("key");
         max_shots = getIntent().getIntExtra("key2",1);
         //Aufgabe vorlesen
@@ -68,8 +80,23 @@ public class Hauptspiel extends AppCompatActivity {
         Spielerauswaehlen();
         tv_aufgabenzahl.setText(getResources().getString(R.string.aufgabevorhanden)+aufgabelist.size());
         setzeTonbild(Allgemein.gebeTon(this));
+
+
+        initV();
     }
 
+    public void initV() {
+        this.videoView1 = findViewById(R.id.videoBB);
+        this.videoView2 = findViewById(R.id.videoBZ);
+        this.videoView3 = findViewById(R.id.videoZB);
+        this.videoView4 = findViewById(R.id.videoZZ);
+        videoView1.setVisibility(View.INVISIBLE);
+        videoView2.setVisibility(View.INVISIBLE);
+        videoView3.setVisibility(View.INVISIBLE);
+        videoView4.setVisibility(View.INVISIBLE);
+        this.mediaController = new MediaController(this);
+
+    }
     //Zurücktaste
     @Override
     public void onBackPressed(){
@@ -94,10 +121,10 @@ public class Hauptspiel extends AppCompatActivity {
     }
 
     //Buttons
-    public void btn_zahl(View view){
+    public void btnimg_zahl(View view){
         kopf_o_zahl(0);
     }
-    public void btn_kopf(View view){
+    public void btnimg_kopf(View view){
         kopf_o_zahl(1);
     }
     public void btn_zufall(View view){
@@ -163,59 +190,84 @@ public class Hauptspiel extends AppCompatActivity {
         zufallspieler = r.nextInt(Spieler.size());
         spieler =Spieler.get(zufallszahl);
         tv_spieler1111.setText(spieler+" "+getResources().getString(R.string.entscheidung));
-        img_muenze=(ImageView) findViewById(R.id.img_muenze);
-        img_muenze.setVisibility(View.INVISIBLE);
+        //img_muenze=(ImageView) findViewById(R.id.img_muenze);
+        //img_muenze.setVisibility(View.INVISIBLE);
     }
 
     //ermittle welches Ergebnis
     public void kopf_o_zahl(int wahl){
-        img_muenze=(ImageView) findViewById(R.id.img_muenze);
-        img_muenze.setVisibility(View.INVISIBLE);
+        //img_muenze=(ImageView) findViewById(R.id.img_muenze);
+       // img_muenze.setVisibility(View.INVISIBLE);
         zufallszahl = r.nextInt(2);
         if (zufallszahl == 1) {
             if (zufallszahl == wahl) {
+                //Animation Bier auf Bier
+                String videoPath1 = "android.resource://" + getPackageName() + "/" +R.raw.bier_auf_bier;
+                Uri uri = Uri.parse(videoPath1);
+                videoView1.setVideoURI(uri);
+                videoView1.setVisibility(View.VISIBLE);
+                videoView1.start();
+                //(new Handler()).postDelayed(this::yourMethod, 5000); Warten
                 tv_spieler1111.setText(getResources().getString(R.string.glueck_kopf));
             } else {
-                tv_spieler1111.setText(spieler+": "+getResources().getString(R.string.pech_kopf));
-                String aufgabetxt=Aufgabe.getAufgabe(this,aufgabelist,max_shots);
-                tv_aufgabenzahl.setText(getResources().getString(R.string.aufgabevorhanden)+aufgabelist.size());
+                //Animation Bier auf 69
+                String videoPath2 = "android.resource://" + getPackageName() + "/" +R.raw.bier_auf_zahl;
+                Uri uri = Uri.parse(videoPath2);
+                videoView2.setVideoURI(uri);
+                videoView2.setVisibility(View.VISIBLE);
+                videoView2.start();
+                tv_spieler1111.setText(spieler + ": " + getResources().getString(R.string.pech_kopf));
+                String aufgabetxt = Aufgabe.getAufgabe(this, aufgabelist, max_shots);
+                tv_aufgabenzahl.setText(getResources().getString(R.string.aufgabevorhanden) + aufgabelist.size());
                 tv_aufgabe.setText(aufgabetxt);
                 sprachausgabe(aufgabetxt);
             }
-            img_muenze.setImageResource(R.drawable.kopf);
-            img_muenze.setVisibility(View.VISIBLE);
+           // img_muenze.setImageResource(R.drawable.kopf);
+           // img_muenze.setVisibility(View.VISIBLE);
         } else {
             if (zufallszahl == wahl) {
+                String videoPath3 = "android.resource://" + getPackageName() + "/" +R.raw.zahl_auf_zahl;
+                Uri uri = Uri.parse(videoPath3);
+                videoView3.setVideoURI(uri);
+                videoView3.setVisibility(View.VISIBLE);
+                videoView3.start();
+                //Animation 69 auf 69
                 tv_spieler1111.setText(getResources().getString(R.string.glueck_zahl));
             } else {
+                //Animation 69 auf Bier
+                String videoPath4 = "android.resource://" + getPackageName() + "/" +R.raw.zahl_auf_bier;
+                Uri uri = Uri.parse(videoPath4);
+                videoView4.setVideoURI(uri);
+                videoView4.setVisibility(View.VISIBLE);
+                videoView4.start();
                 tv_spieler1111.setText(spieler+": "+getResources().getString(R.string.pech_zahl));
                 String aufgabetxt=Aufgabe.getAufgabe(this,aufgabelist,max_shots);
                 tv_aufgabenzahl.setText(getResources().getString(R.string.aufgabevorhanden)+aufgabelist.size());
                 tv_aufgabe.setText(aufgabetxt);
                 sprachausgabe(aufgabetxt);
             }
-            img_muenze.setImageResource(R.drawable.zahl);
-            img_muenze.setVisibility(View.VISIBLE);
+           // img_muenze.setImageResource(R.drawable.zahl);
+           // img_muenze.setVisibility(View.VISIBLE);
         }
         ausblenden_k_o_z();
     }
     //Ausblenden von Kopf und Zahl Buttons -> Zufallspieler wird angezeigt
     public void ausblenden_k_o_z(){
-        btn_kopf = (Button)findViewById(R.id.btn_kopf);
-        btn_zahl = (Button)findViewById(R.id.btn_zahl);
+        btnimg_kopf = (ImageButton)findViewById(R.id.btn_kopf);
+        btnimg_zahl = (ImageButton)findViewById(R.id.btn_zahl);
         btn_zufall = (Button)findViewById(R.id.btn_zufall);
-        btn_zahl.setVisibility(View.INVISIBLE);
-        btn_kopf.setVisibility(View.INVISIBLE);
+        btnimg_zahl.setVisibility(View.INVISIBLE);
+        btnimg_kopf.setVisibility(View.INVISIBLE);
         btn_zufall.setVisibility(View.VISIBLE);
     }
 
     //Einblenden von Kopf und Zahl -> Zufallspieler wird nicht angezeigt
     public void einblenden_k_o_z(){
-        btn_kopf = (Button)findViewById(R.id.btn_kopf);
-        btn_zahl = (Button)findViewById(R.id.btn_zahl);
+        btnimg_kopf = (ImageButton)findViewById(R.id.btn_kopf);
+        btnimg_zahl = (ImageButton)findViewById(R.id.btn_zahl);
         btn_zufall = (Button)findViewById(R.id.btn_zufall);
-        btn_zahl.setVisibility(View.VISIBLE);
-        btn_kopf.setVisibility(View.VISIBLE);
+        btnimg_zahl.setVisibility(View.VISIBLE);
+        btnimg_kopf.setVisibility(View.VISIBLE);
         btn_zufall.setVisibility(View.INVISIBLE);
         tv_aufgabe.setText("");
     }
@@ -275,6 +327,10 @@ public class Hauptspiel extends AppCompatActivity {
             btnimg_ton.setImageResource(R.drawable.ic_launcher_background);
         }
 
+    }
+    public void setzKopfundZahl(){
+        btnimg_kopf.setImageResource(R.drawable.kopf);
+        btnimg_zahl.setImageResource(R.drawable.zahl);
     }
 
 }

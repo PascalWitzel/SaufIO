@@ -4,20 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Hauptspiel">
-
+    tools:context=".Hauptspiel"
+    android:background = "666">
     <TextView
         android:id="@+id/tv_spieleranzeige"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="196dp"
+        android:layout_marginRight="196dp"
         android:text="TextView"
-        tools:layout_editor_absoluteX="44dp"
-        tools:layout_editor_absoluteY="16dp" />
+        app:layout_constraintEnd_toStartOf="@+id/tv_aufgabenvorhanden"
+        app:layout_constraintHorizontal_bias="0.952"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btn_zufall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="145dp"
+        android:layout_height="73dp"
         android:layout_marginTop="584dp"
         android:layout_marginEnd="48dp"
         android:layout_marginRight="48dp"
@@ -26,45 +31,49 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_spieleranzeige" />
 
-    <Button
-        android:id="@+id/btn_kopf"
-        android:layout_width="132dp"
-        android:layout_height="86dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginLeft="44dp"
-        android:layout_marginTop="440dp"
-        android:onClick="btn_kopf"
-        android:text="@string/Kopf"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btn_zahl"
-        android:layout_width="125dp"
-        android:layout_height="88dp"
-        android:layout_marginTop="440dp"
-        android:layout_marginEnd="48dp"
-        android:layout_marginRight="48dp"
-        android:onClick="btn_zahl"
-        android:text="@string/Zahl"
+    <VidoeView
+        android:id="@+id/videoBB"
+        android:layout_width="409dp"
+        android:layout_height="253dp"
+        android:layout_marginTop="72dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_aufgabe" />
 
-    <ImageView
-        android:id="@+id/img_muenze"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@android:drawable/btn_star_big_on"
-        tools:layout_editor_absoluteX="189dp"
-        tools:layout_editor_absoluteY="294dp" />
+    <VidoeView
+        android:id="@+id/videoBZ"
+        android:layout_width="409dp"
+        android:layout_height="253dp"
+        android:layout_marginTop="72dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_aufgabe" />
+
+    <VidoeView
+        android:id="@+id/videoZB"
+        android:layout_width="409dp"
+        android:layout_height="253dp"
+        android:layout_marginTop="72dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_aufgabe" />
+
+    <VidoeView
+        android:id="@+id/videoZZ"
+        android:layout_width="409dp"
+        android:layout_height="253dp"
+        android:layout_marginTop="72dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_aufgabe" />
 
     <Button
         android:id="@+id/button5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="117dp"
+        android:layout_height="73dp"
         android:layout_marginStart="40dp"
         android:layout_marginLeft="40dp"
-        android:layout_marginBottom="67dp"
+        android:layout_marginBottom="36dp"
         android:onClick="btn_spielerloeschen"
         android:text="Spieler add"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -92,17 +101,43 @@
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/img_muenze"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/btn_ton"
         android:layout_width="58dp"
         android:layout_height="66dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="36dp"
         android:onClick="btn_tonsetzen"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_spieleranzeige"
         tools:ignore="OnClick"
-        tools:layout_editor_absoluteX="33dp"
-        tools:layout_editor_absoluteY="147dp"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <ImageButton
+        android:id="@+id/btn_kopf"
+        android:layout_width="150dp"
+        android:layout_height="142dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/kopf"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/videoBB" />
+
+    <ImageButton
+        android:id="@+id/btn_zahl"
+        android:layout_width="150dp"
+        android:layout_height="142dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginRight="40dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/zahl"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/videoBB" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
