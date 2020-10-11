@@ -32,7 +32,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <VidoeView
+    <VideoView
         android:id="@+id/videoBB"
         android:layout_width="409dp"
         android:layout_height="253dp"
@@ -41,7 +41,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_aufgabe" />
 
-    <VidoeView
+    <VideoView
         android:id="@+id/videoBZ"
         android:layout_width="409dp"
         android:layout_height="253dp"
@@ -50,7 +50,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_aufgabe" />
 
-    <VidoeView
+    <VideoView
         android:id="@+id/videoZB"
         android:layout_width="409dp"
         android:layout_height="253dp"
@@ -59,7 +59,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_aufgabe" />
 
-    <VidoeView
+    <VideoView
         android:id="@+id/videoZZ"
         android:layout_width="409dp"
         android:layout_height="253dp"
