@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Hauptspiel"
-    android:background = "666">
+    android:background="666"
+    tools:context=".Hauptspiel">
+
     <TextView
         android:id="@+id/tv_spieleranzeige"
         android:layout_width="wrap_content"
@@ -21,15 +22,15 @@
 
     <Button
         android:id="@+id/btn_zufall"
-        android:layout_width="145dp"
+        android:layout_width="150dp"
         android:layout_height="73dp"
-        android:layout_marginTop="584dp"
-        android:layout_marginEnd="48dp"
-        android:layout_marginRight="48dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="44dp"
         android:onClick="btn_zufall"
         android:text="@string/naechsterspieler"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_spieleranzeige" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <VidoeView
         android:id="@+id/videoBB"
@@ -69,13 +70,13 @@
 
     <Button
         android:id="@+id/button5"
-        android:layout_width="117dp"
+        android:layout_width="150dp"
         android:layout_height="73dp"
         android:layout_marginStart="40dp"
         android:layout_marginLeft="40dp"
-        android:layout_marginBottom="36dp"
+        android:layout_marginBottom="44dp"
         android:onClick="btn_spielerloeschen"
-        android:text="Spieler add"
+        android:text="Spieler add (+)"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

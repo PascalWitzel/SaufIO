@@ -298,6 +298,7 @@ public class Hauptspiel extends AppCompatActivity {
     }
     //Spieler nachträglich hinzufügen
     public void Spieleradd(){
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.alter_spielerhinzufügen_title));
         builder.setMessage(getResources().getString(R.string.alter_spielerhinzufügen_message));
@@ -321,10 +322,10 @@ public class Hauptspiel extends AppCompatActivity {
 
     public void setzeTonbild(boolean b){
         if (b){
-            btnimg_ton.setImageResource(R.drawable.ic_launcher_foreground);
+            btnimg_ton.setImageResource(R.drawable.lautsprecher_an);
         }
         else {
-            btnimg_ton.setImageResource(R.drawable.ic_launcher_background);
+            btnimg_ton.setImageResource(R.drawable.lautsprecher_aus);
         }
 
     }
